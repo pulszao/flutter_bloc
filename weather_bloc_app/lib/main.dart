@@ -14,8 +14,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<WeatherBlocBloc>(
       create: (context) => WeatherBlocBloc(),
-      child: const MaterialApp(
-        home: HomeScreen(),
+      child: MaterialApp(
+        theme: ThemeData.dark(),
+        home: const HomeScreen(),
       ),
     );
   }

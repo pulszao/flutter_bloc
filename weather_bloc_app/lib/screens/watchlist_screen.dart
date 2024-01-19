@@ -18,17 +18,48 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-      ),
-      body: StandardBodyWidget(
-        onRefresh: () async {},
-        bodyWidget: const Placeholder(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: const Color(0xFF1A1A1A),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          systemOverlayStyle: const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+        ),
+        body: StandardBodyWidget(
+          onRefresh: () async {},
+          bodyWidget: Column(
+            children: [
+              const SizedBox(height: 50),
+              SizedBox(
+                height: 45,
+                width: 360,
+                child: TextFormField(
+                  cursorColor: Colors.black,
+                  style: const TextStyle(color: Colors.black),
+                  onFieldSubmitted: (data) {
+                    print(data);
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color(0xfff1f1f1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.only(bottom: 25),
+                    hintText: "Search for Items",
+                    hintStyle: TextStyle(color: Colors.grey.shade700),
+                    prefixIcon: const Icon(Icons.search),
+                    prefixIconColor: Colors.grey.shade700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
