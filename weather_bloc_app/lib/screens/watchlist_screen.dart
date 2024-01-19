@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:weather_bloc_app/bloc/watchlist_cubit.dart';
 import 'package:weather_bloc_app/utils/utils.dart';
 
 class WatchlistScreen extends StatefulWidget {
@@ -30,34 +32,46 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         ),
         body: StandardBodyWidget(
           onRefresh: () async {},
-          bodyWidget: Column(
-            children: [
-              const SizedBox(height: 50),
-              SizedBox(
-                height: 45,
-                width: 360,
-                child: TextFormField(
-                  cursorColor: Colors.black,
-                  style: const TextStyle(color: Colors.black),
-                  onFieldSubmitted: (data) {
-                    print(data);
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xfff1f1f1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
+          bodyWidget: BlocBuilder<WatchlistCubit, WatchlistState>(
+            builder: (context, state) {
+              List<Widget> citiesWidget = [];
+              for (String city in state.watchlist) {
+                citiesWidget.add(Text(city));
+              }
+
+              return Column(
+                children: [
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    height: 45,
+                    width: 360,
+                    child: TextFormField(
+                      cursorColor: Colors.black,
+                      style: const TextStyle(color: Colors.black),
+                      onFieldSubmitted: (data) {
+                        BlocProvider.of<WatchlistCubit>(context).addCity(data);
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xfff1f1f1),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.only(bottom: 25),
+                        hintText: "Search for Items",
+                        hintStyle: TextStyle(color: Colors.grey.shade700),
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: Colors.grey.shade700,
+                      ),
                     ),
-                    contentPadding: const EdgeInsets.only(bottom: 25),
-                    hintText: "Search for Items",
-                    hintStyle: TextStyle(color: Colors.grey.shade700),
-                    prefixIcon: const Icon(Icons.search),
-                    prefixIconColor: Colors.grey.shade700,
                   ),
-                ),
-              ),
-            ],
+                  Column(
+                    children: citiesWidget,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
